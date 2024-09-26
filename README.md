@@ -44,6 +44,8 @@ To install EmployeeHub:
 
 ![Screenshot of EmployeeHub](./images/Screenshot%202024-09-26%20092102.png)
 
+[Link to Walk Through Video](./images/Screen%20Recording%202024-09-26%20093021.mp4)
+
 ## Credits
 
 This project was made possible with the help of:
