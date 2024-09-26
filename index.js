@@ -1,62 +1,78 @@
 require("dotenv").config();
 const inquirer = require("inquirer");
 const { Pool } = require("pg");
+const {
+  viewDepartments,
+  viewRoles,
+  viewEmployees,
+  addDepartment,
+  addRole,
+  addEmployee,
+  updateEmployeeRole,
+} = require("./query");
 
 const pool = new Pool({
   user: process.env.USER,
   password: process.env.PASSWORD,
   host: process.env.HOST,
   database: process.env.DATABASE,
+  port: process.env.PORT, // Add this line
 });
-pool.connect();
 
 // Main menu with some modified prompts
 const mainMenu = async () => {
-  const answer = await inquirer.prompt({
-    type: "list",
-    name: "action",
-    message: "What would you like to explore today?",
-    choices: [
-      " Browse departments",
-      " Browse roles",
-      " Browse employees",
-      " Add a new department",
-      " Add a new role",
-      " Add a new employee",
-      " Update an employee's role",
-      " Exit",
-    ],
-  });
+  try {
+    const answer = await inquirer.prompt({
+      type: "list",
+      name: "action",
+      message: "What would you like to explore today?",
+      choices: [
+        "Browse departments",
+        "Browse roles",
+        "Browse employees",
+        "Add a new department",
+        "Add a new role",
+        "Add a new employee",
+        "Update an employee's role",
+        "Exit",
+      ],
+    });
 
-  switch (answer.action) {
-    case " Browse departments":
-      const departments = await viewDepartments();
-      console.table(departments);
-      break;
-    case " Browse roles":
-      const roles = await viewRoles();
-      console.table(roles);
-      break;
-    case " Browse employees":
-      const employees = await viewEmployees();
-      console.table(employees);
-      break;
-    case " Add a new department":
-      await promptAddDepartment();
-      break;
-    case " Add a new role":
-      await promptAddRole();
-      break;
-    case " Add a new employee":
-      await promptAddEmployee();
-      break;
-    case " Update an employee's role":
-      await promptUpdateEmployeeRole();
-      break;
-    case " Exit":
-      process.exit();
+    switch (answer.action) {
+      case "Browse departments":
+        const departments = await viewDepartments();
+        console.table(departments);
+        break;
+      case "Browse roles":
+        const roles = await viewRoles();
+        console.table(roles);
+        break;
+      case "Browse employees":
+        const employees = await viewEmployees();
+        console.table(employees);
+        break;
+      case "Add a new department":
+        await promptAddDepartment();
+        break;
+      case "Add a new role":
+        await promptAddRole();
+        break;
+      case "Add a new employee":
+        await promptAddEmployee();
+        break;
+      case "Update an employee's role":
+        await promptUpdateEmployeeRole();
+        break;
+      case "Exit":
+        process.exit();
+    }
+
+    // Loop back to main menu
+    mainMenu();
+  } catch (error) {
+    console.error("An error occurred:", error.message);
+    mainMenu(); // Restart menu after error
   }
-  mainMenu();
 };
 
 // Function to prompt and add a department
@@ -152,3 +168,32 @@ const promptUpdateEmployeeRole = async () => {
 };
 
 mainMenu();
+
+// const mainMenu = async () => {
+//   console.log("Entering main menu...");
+//   try {
+//     const answer = await inquirer.prompt({
+//       type: "list",
+//       name: "action",
+//       message: "What would you like to explore today?",
+//       choices: [
+//         "Browse departments",
+//         "Browse roles",
+//         "Browse employees",
+//         "Exit",
+//       ],
+//     });
+//     console.log("You chose:", answer.action);
+
+//     // Follow up on the chosen action
+//     if (answer.action === "Exit") {
+//       console.log("Exiting the application.");
+//       process.exit();
+//     }
+//   } catch (error) {
+//     console.error("An error occurred:", error.message);
+//   }
+// };
+
+// // Run the main menu
+// mainMenu();

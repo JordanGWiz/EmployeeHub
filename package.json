@@ -3,8 +3,8 @@
     "dotenv": "^16.4.5",
     "env": "^0.0.2",
     "express": "^4.19.2",
-    "inquirer": "^8.2.4",
-    "pg": "^8.11.5"
+    "inquirer": "^8.2.6",
+    "pg": "^8.13.0"
   },
   "name": "develop",
   "version": "1.0.0",
